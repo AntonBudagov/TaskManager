@@ -10,15 +10,19 @@ import { TaskModule } from './task/task.module';
 import { RouterModule } from '@angular/router';
 
 import { routes } from '../app-router';
+import {StatisticsComponent} from './statistics/statistics.component';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    StatisticsComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     TaskModule,
     MatModule,
     RouterModule.forRoot(routes),

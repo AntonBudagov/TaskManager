@@ -1,3 +1,22 @@
-<p>
-  single-task works!
-</p>
+<div class="task-list__item"
+     *ngFor="let task of tasks"
+     [@taskState]="task.state"
+     [ngClass]="(task.state == 'inactive') ? 'inactive' : 'animated'">
+  <button mat-mini-fab mat-raised-button class="task-item__button" type="button" [ngClass]="isCompletedVisible ? 'done' : '' ">
+    <span class="icon material-icons">done</span>
+  </button>
+  <div class="task-list__description">
+    <div class="date-item">{{task.finishTo | date:"MM.dd.yy"}}</div>
+    <h4 mat-line>{{task.name}}</h4>
+    <div >{{task.description}}</div>
+  </div>
+  <div class="btn-group">
+    <button mat-mini-fab aria-label="Delete task" class="task-item__button" type="button"  (click)="onRemove(task)">
+      <span class="icon material-icons">delete</span>
+    </button>
+    <button mat-mini-fab aria-label="edit task" class="task-item__button" type="button" [routerLink]="'/task/' + task.id" >
+      <span class="icon material-icons">edit</span>
+    </button>
+  </div>
+</div>
+

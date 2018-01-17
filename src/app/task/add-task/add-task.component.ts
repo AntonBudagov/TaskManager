@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {TaskService} from '../task.service';
+import {UrgencyMap, Task} from '../model/task.interface';
+import {NgForm} from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-task',
@@ -7,9 +11,32 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddTaskComponent implements OnInit {
 
-  constructor() { }
+  isLoaded: Boolean = false;
+  task: Task;
+  urgencyList: any[] = UrgencyMap;
+  @ViewChild('taskForm') toForm: NgForm;
 
-  ngOnInit() {
+  constructor(private taskService: TaskService,
+              private rout: Router) {
   }
 
+  ngOnInit() {
+    this.isLoaded = true;
+    this.task = {
+      id: Date.now(),
+      name: '',
+      description: '',
+      status: false,
+      urgency: 0,
+      finishTo: new Date(Date.now()),
+      finishToStr: ''
+    };
+  }
+
+  addTask(): void {
+    console.log(this.toForm);
+    console.log(this.task);
+    this.taskService.add(this.task)
+      .subscribe(() => this.rout.navigate(['task-list']));
+  }
 }

@@ -1,3 +1,60 @@
-<p>
-  add-task works!
-</p>
+<mat-grid-list cols="1" *ngIf = "isLoaded">
+  <mat-card class="dashboard-card">
+    <mat-card-title>Редактирование задачи</mat-card-title>
+    <mat-card-content>
+      <form class="example-form" #taskForm="ngForm">
+        <section class="example-section">
+          <mat-checkbox mat-list-icon class="example-half-width" name="status"
+
+                        [checked]="task.status"
+                        [(ngModel)]="task.status">
+            {{task.status ? 'Выполнено': 'Не Выполненно'}}</mat-checkbox>
+          <mat-select
+            placeholder="Выберите срочность"
+            class="example-half-width"
+            name="urgency" [(ngModel)]="urgencyList[task.urgency].name">
+            <mat-option *ngFor="let item of urgencyList" [value]="item.name">{{item['name']}}</mat-option>
+          </mat-select>
+        </section>
+
+        <mat-input-container class="example-full-width">
+          <input matInput #taskName="ngModel" placeholder="Название" name="name" required pattern="[A-Za-z]{4,20}" [(ngModel)]="task.name" >
+        </mat-input-container>
+        <div [hidden]="taskName.valid || taskName.untouched" class="error">Имя отсутствует или короче 4 символов
+        </div>
+
+        <mat-input-container class="example-full-width">
+          <!--<input type="date" matInput name="date" #taskDate-->
+          <!--value="{{task.finishTo}}">-->
+          <input matInput [ngModel]="task.finishTo | date:'yyyy-MM-dd'" (ngModelChange)="task.finishTo = $event" type="text" name="startDate" #taskDate="ngModel"/>
+        </mat-input-container>
+        <div [hidden]="taskDate.valid || taskDate.untouched" class="error">
+          Дата отсутствует
+        </div>
+
+        <mat-input-container class="example-full-width">
+        <textarea matInput placeholder="Описание задачи" name="descriptionTask"
+                  required [(ngModel)]="task.description"></textarea>
+        </mat-input-container>
+        <div [hidden]="true" class="error">
+          Описание обязательно
+        </div>
+
+        <button mat-raised-button [color]="accent" (click)="addTask($event)" [disabled]="!taskForm.form.valid">
+          <mat-icon>check</mat-icon>Сохранить
+        </button> &nbsp;
+        <a mat-raised-button [color]="accent" (click)="taskForm.reset()">
+          Стереть
+        </a>
+        <br>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+</mat-grid-list>
+<mat-grid-list cols="1" *ngIf = "!isLoaded">
+  <mat-card class="loading-card">
+    <img class="loading" src="./assets/img/loading.gif">
+  </mat-card>
+</mat-grid-list>

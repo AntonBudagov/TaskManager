@@ -1,3 +1,52 @@
-<p>
-  list-task works!
-</p>
+<mat-grid-list cols="1" [style.display] = "isLoaded ? 'block': 'none'" >
+  <div class="list-mode">
+    <!--[color]="accent"-->
+    <a mat-raised-button [color]="accent" routerLink="/task/add">
+      <mat-icon>add</mat-icon>
+      Добавить задачу
+    </a>
+    <br>
+  </div>
+  <mat-card>
+    <h1>Список важных дел</h1>
+    <section class="list-mode">
+      <!--[color]="primary"-->
+      <mat-slide-toggle
+        class="example-margin"
+        [color]="primary"
+        (click)="toggleCompleted()">
+        Показать завершенные
+      </mat-slide-toggle>
+    </section>
+  </mat-card>
+
+  <div class="task-list">
+    <h3 mat-subheader>В процессе</h3>
+    <app-single-task class="single-task" [tasks]="filteredTasks.uncompleted" (remove)="deleteTask($event)"></app-single-task>
+  </div>
+  <mat-nav-list>
+    <div *ngIf="isCompletedVisible">
+      <h3 mat-subheader> Завершенные задачи</h3>
+      <mat-list-item class="task-list-item" *ngFor="let completed of filteredTasks.completed">
+        <mat-icon class="done" mat-list-icon>check_box</mat-icon>
+        <h4 mat-line>{{completed.name}}</h4>
+        <mat-chip-list>
+          <mat-chip selected="true" color="{{urgencyMap[completed.urgency].code}}">
+            {{urgencyMap[completed.urgency].name}}
+          </mat-chip>
+        </mat-chip-list>
+        <div mat-line>{{completed.description}}</div>
+        <div mat-line class="date-item">{{completed.finishTo | date:"MM/dd/yy"}}</div>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </div>
+
+  </mat-nav-list>
+</mat-grid-list>
+
+<!--loader-->
+<mat-grid-list cols="1" *ngIf = "!isLoaded">
+  <mat-card class="loading-card">
+    <img class="loading" src="./assets/img/loading.gif">
+  </mat-card>
+</mat-grid-list>

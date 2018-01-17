@@ -7,14 +7,21 @@ import { AddTaskComponent } from './add-task/add-task.component';
 import { EditTaskComponent } from './edit-task/edit-task.component';
 import { SingleTaskComponent } from './single-task/single-task.component';
 import { MatModule } from '../mat/mat.module';
+import { TaskService } from './task.service';
+import { FormsModule } from '@angular/forms';
+import { InMemoryDataService } from '../in-memory-data.service';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 
 @NgModule({
   imports: [
     CommonModule,
+    FormsModule,
     TaskRoutingModule,
-    MatModule
+    MatModule,
+    HttpClientInMemoryWebApiModule.forRoot(InMemoryDataService),
   ],
   declarations: [ListTaskComponent, AddTaskComponent, EditTaskComponent, SingleTaskComponent],
-  exports: []
+  exports: [],
+  providers: [TaskService]
 })
 export class TaskModule { }
